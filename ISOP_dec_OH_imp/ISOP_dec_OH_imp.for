@@ -10737,7 +10737,7 @@ C                                  Anth  ,Biomass,Veg   ,Soil  ,Oceans
       DATA (CLASS(IC,25),IC=1,5)  /6.42,   0.55,  0.0, 0.0,  1.06/ ! C3H8
       DATA (CLASS(IC,76),IC=1,5) /0.963,  9.2,   99.6, 0.0,  0.0 / ! METHANOL
       DATA (CLASS(IC,73),IC=1,5)  /0.297,  1.83,  43.7, 0.0,  0.0 / ! ACETONE
-      DATA (CLASS(IC,43),IC=1,5)  /0.0,    0.0,   535.0, 0.0, 0.0 / ! C5H8
+      DATA (CLASS(IC,43),IC=1,5)  /0.0,    0.0,   250.0, 0.0, 0.0 / ! C5H8
       DATA (CLASS(IC,64),IC=1,5)  /5.3,    1.6,   0.0,  0.0,  0.0 / ! TOLUENE
       DATA (CLASS(IC,47),IC=1,5)  /0.0,    0.0,  108.2, 0.0, 0.0 / ! APINENE
       DATA (CLASS(IC,53),IC=1,5)  /0.0,    0.0,   54.1, 0.0, 0.0 / ! BPINENE
