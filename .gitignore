@@ -1,0 +1,17 @@
+Base/
+EMDIR/
+metdata/
+Update_docs/
+__MACOSX/
+compare_dat.py
+HFOs/
+OLD_Base/
+*/stoch3d*
+*/run_*
+*/RESTART*
+*/DUMP*
+*/*.o
+*/*.sh
+*/*.dat
+!chem10_soa.dat
+!flux10_OH.dat
