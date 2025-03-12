@@ -1,0 +1,5 @@
+Based on updated STOCHEM Base 03/2025, see git repo
+
+In the context of removing an erroneous NOx vegetation emission with our base update (prev set at 8 Tg, now at 0)
+along with additional emission updates, aiming to elucidate the impact on the response of OH from an increase 
+in isoprene emissions. Therefore, isoprene emissions have been increased to 700 Tg (from ~500 in base) in this scenario
