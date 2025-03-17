@@ -1698,7 +1698,12 @@ C----------------------------------------------------------------------
      & AMMSUL      , HPUCARB12   , DHPR12O2     , DHPR12OOH   ,
      & DHPCARB9    , HUCARB9     , RU12NO3      , RU10NO3    ,
      & IEPOX       , DHCARB9     , RU10AO2      , MACO3      ,
-     & HMML
+     & HMML        , BCARY       , BCOO        , BCO2        ,
+     & PROD1       , PROD2       , BCNO3       , BCOOH       ,
+     & PROD3       , P1O2        , P1NO3       , P1OOH       ,
+     & PROD4       , P2O2        , P2NO3       , P2OOH       ,
+     & P5001       , P5002       , P5003       , P5004       ,
+     & P5005       , P5006
       COMMON
      & O1D         ,O           ,OH          , NO2         ,
      & NO3         , O3          ,N2O5        ,NO          ,
@@ -1761,7 +1766,12 @@ C----------------------------------------------------------------------
      & AMMSUL      , HPUCARB12   , DHPR12O2     , DHPR12OOH   ,
      & DHPCARB9    , HUCARB9     , RU12NO3      , RU10NO3     ,
      & IEPOX       , DHCARB9     , RU10AO2      , MACO3       , 
-     & HMML
+     & HMML        , BCARY       , BCOO        , BCO2        ,
+     & PROD1       , PROD2       , BCNO3       , BCOOH       ,
+     & PROD3       , P1O2        , P1NO3       , P1OOH       ,
+     & PROD4       , P2O2        , P2NO3       , P2OOH       ,
+     & P5001       , P5002       , P5003       , P5004       ,
+     & P5005       , P5006
 C
       DOUBLE PRECISION CP(NC)
       EQUIVALENCE (O1D,CP(1))
@@ -2839,6 +2849,7 @@ C
      &+ Y(JB,118) +
      & Y(JB,119) + Y(JB,121) + Y(JB,54) + Y(JB,56) + Y(JB,122) 
      &+ Y(JB,55) +Y(JB,232)  +Y(JB,239) + Y(JB,240)
+     &+ Y(JB,244) +Y(JB,250)  +Y(JB,254) 
 C
 C Mass of organic particulate material             
 C -------------------------------------------------------------------
@@ -2847,11 +2858,14 @@ C
      & Y(JB,206)*3.059E-10 + Y(JB,207)*3.126E-10 + Y(JB,208)*3.093E-10 + 
      & Y(JB,209)*3.093E-10 + Y(JB,210)*3.325E-10 + Y(JB,211)*4.072E-10 + 
      & Y(JB,212)*2.860E-10 + Y(JB,213)*3.391E-10 + Y(JB,214)*2.310E-10 + 
-     & Y(JB,215)*2.543E-10 + Y(JB,216)*1.628E-10 + Y(JB,219)*2.493E-10
+     & Y(JB,215)*2.543E-10 + Y(JB,216)*1.628E-10 + Y(JB,219)*2.493E-10 +
+     & Y(JB,257)*4.191E-10 + Y(JB,258)*4.705E-10 + Y(JB,259)*4.224E-10 +
+     & Y(JB,260)*5.502E-10 + Y(JB,261)*5.021E-10 + Y(JB,262)*4.222E-10
 C
 C    MOM IS CURRENTLY IN MOLECULES CM-3 
 c    NEED TO CONVERT TO ug m-3
-      MOM(JB) = SOA(JB) + Y(JB,218)*13.2*1.0D12/NA
+      MOM(JB) = SOA(JB) + Y(JB,218)*13.2*1.0D12/NA + 
+     & Y(JB,255)*331.4*1.0D12/NA + Y(JB,256)*302.4*1.0D12/NA
 C	WRITE(6,*)'MOM=', MOM(JB),JB
 C     Set flux arrays to zero
         DO 56 I=1,1800
@@ -3218,7 +3232,14 @@ C          OH               Y(JB,  3)
      &+(RC(JB,585)*Y(JB,106)*Y(JB,9)) 
      &+(RC(JB,586)*Y(JB,6)*Y(JB,109))   
      &+(RC(JB,588)*Y(JB,72)*Y(JB,9)) 
-     &+(RC(JB,589)*Y(JB,50)*Y(JB,9))  
+     &+(RC(JB,589)*Y(JB,50)*Y(JB,9))
+     &+(RC(JB,591)*Y(JB,242)*Y(JB,6)) 
+     &+(RC(JB,602)*Y(JB,248)*Y(JB,3)) 
+     &+(RC(JB,604)*Y(JB,245)*Y(JB,6)) 
+     &+(RC(JB,612)*Y(JB,252)*Y(JB,3)) 
+     &+(RC(JB,614)*Y(JB,246)*Y(JB,6)) 
+     &+(DJ(JB,110)*Y(JB,248)) 
+     &+(DJ(JB,111)*Y(JB,252))   
       L = 0.0
      &+(RC(JB,484)    *Y(JB,203))                        
      &+(RC(JB,474)    *Y(JB,199))+(RC(JB,475)    *Y(JB,200))
@@ -3335,6 +3356,15 @@ C          OH               Y(JB,  3)
      &+(RC(JB,560)*Y(JB,238)) +(RC(JB,561)*Y(JB,46))
      &+(RC(JB,562)*Y(JB,46))+(RC(JB,578)*Y(JB,202))
      &+(RC(JB,580)*Y(JB,241))
+     &+(RC(JB,592)*Y(JB,242))
+     &+(RC(JB,601)*Y(JB,247))
+     &+(RC(JB,602)*Y(JB,248))
+     &+(RC(JB,605)*Y(JB,245))
+     &+(RC(JB,611)*Y(JB,251))
+     &+(RC(JB,612)*Y(JB,252))
+     &+(RC(JB,615)*Y(JB,246))
+     &+(RC(JB,621)*Y(JB,249))
+     &+(RC(JB,622)*Y(JB,253))
       Y(JB,  3) = P/L
 C
 C          NO2              Y(JB,  4)
@@ -3530,7 +3560,15 @@ C          NO2              Y(JB,  4)
      &+(RC(JB,572)*Y(JB,240)*Y(JB,5))
      &+(RC(JB,573)*Y(JB,240)*Y(JB,5)) 
      &+(RC(JB,581)*Y(JB,114)*Y(JB,8))
-     &+(RC(JB,582)*Y(JB,114)*Y(JB,5))   
+     &+(RC(JB,582)*Y(JB,114)*Y(JB,5))
+     &+(RC(JB,596)*Y(JB,244)*Y(JB,8))
+     &+(RC(JB,598)*Y(JB,244)*Y(JB,5))
+     &+(RC(JB,601)*Y(JB,247)*Y(JB,3))
+     &+(RC(JB,606)*Y(JB,250)*Y(JB,8))
+     &+(RC(JB,608)*Y(JB,250)*Y(JB,5))
+     &+(RC(JB,611)*Y(JB,251)*Y(JB,3))
+     &+(RC(JB,616)*Y(JB,254)*Y(JB,8))
+     &+(RC(JB,618)*Y(JB,254)*Y(JB,5))    
       L = DD(JB, 4)+DW(JB, 4)
      &+(RC(JB,482)    *Y(JB,50 ))
      &+(DJ(JB,4)      )          
@@ -3610,7 +3648,10 @@ C          NO3              Y(JB,  5)
      &+(RC(JB,515)    *Y(JB,220))+(RC(JB,538)*Y(JB,231))
      &+(RC(JB,544)*Y(JB,230))+(RC(JB,557)*Y(JB,110))
      &+(RC(JB,565)*Y(JB,239))+(RC(JB,572)*Y(JB,240))	
-     &+(RC(JB,573)*Y(JB,240))+(RC(JB,582)*Y(JB,114))    
+     &+(RC(JB,573)*Y(JB,240))+(RC(JB,582)*Y(JB,114))
+     &+(RC(JB,598)*Y(JB,244))
+     &+(RC(JB,608)*Y(JB,250))
+     &+(RC(JB,618)*Y(JB,254))     
       Y(JB,  5) = (YP(JB,  5)+DTS*P)/(1.0+DTS*L)
 C
 C          O3               Y(JB,  6)
@@ -3637,7 +3678,13 @@ C          O3               Y(JB,  6)
      &+(RC(JB,517)    *Y(JB,222))+(RC(JB,520)    *Y(JB,223)) 
      &+(RC(JB,530)    *Y(JB,43)) +(RC(JB,531)    *Y(JB,43))
      &+(RC(JB,532)    *Y(JB,43))+ (RC(JB,533)    *Y(JB,43)) 
-     &+(RC(JB,543)    *Y(JB,230))+(RC(JB,586)*Y(JB,109)) 
+     &+(RC(JB,543)    *Y(JB,230))+(RC(JB,586)*Y(JB,109))
+     &+(RC(JB,590)*Y(JB,242))
+     &+(RC(JB,591)*Y(JB,242))
+     &+(RC(JB,603)*Y(JB,245))
+     &+(RC(JB,604)*Y(JB,245))
+     &+(RC(JB,613)*Y(JB,246))
+     &+(RC(JB,614)*Y(JB,246))
       Y(JB,  6) = (YP(JB,  6)+DTS*P)/(1.0+DTS*L)
 C
 C          N2O5             Y(JB,  7)
@@ -3719,6 +3766,12 @@ C          NO               Y(JB,  8)
      &+(RC(JB,563)*Y(JB,239))+(RC(JB,564)*Y(JB,239))  
      &+(RC(JB,569)*Y(JB,240))+(RC(JB,570)*Y(JB,240))
      &+(RC(JB,581)*Y(JB,114))   
+     &+(RC(JB,596)    *Y(JB,244))
+     &+(RC(JB,597)    *Y(JB,244))
+     &+(RC(JB,606)    *Y(JB,250))
+     &+(RC(JB,607)    *Y(JB,250))
+     &+(RC(JB,616)    *Y(JB,254))
+     &+(RC(JB,617)    *Y(JB,254))
       Y(JB,  8) = (YP(JB,  8)+DTS*P)/(1.0+DTS*L)
 C
 C          HO2              Y(JB,  9)
@@ -3868,6 +3921,14 @@ C          HO2              Y(JB,  9)
      &+(DJ(JB,31)     *Y(JB,113))+(RC(JB,581)*Y(JB,114)*Y(JB,8)) 
      &+(RC(JB,582)*Y(JB,114)*Y(JB,5)) +(RC(JB,583)*Y(JB,114)) 
      &+(RC(JB,374)    *Y(JB,6  )*Y(JB,109))
+     &+(RC(JB,596)*Y(JB,244)*Y(JB,8))
+     &+(RC(JB,598)*Y(JB,244)*Y(JB,5))
+     &+(RC(JB,606)*Y(JB,250)*Y(JB,8))
+     &+(RC(JB,608)*Y(JB,250)*Y(JB,5))
+     &+(RC(JB,616)*Y(JB,254)*Y(JB,8))
+     &+(RC(JB,618)*Y(JB,254)*Y(JB,5))
+     &+(DJ(JB,110)*Y(JB,248)) 
+     &+(DJ(JB,111)*Y(JB,252))
       L = 0.0
      &+(RC(JB,289)    *Y(JB,122))+(RC(JB,290)    *Y(JB,55 ))                        
      &+(RC(JB,286)    *Y(JB,121))+(RC(JB,287)    *Y(JB,54 ))
@@ -3909,7 +3970,10 @@ C          HO2              Y(JB,  9)
      &+(RC(JB,523)    *Y(JB,224))+(RC(JB,539)*Y(JB,231))
      &+(RC(JB,566)*Y(JB,239))+(RC(JB,574)*Y(JB,240))	
      &+(RC(JB,575)*Y(JB,240))+(RC(JB,584)*Y(JB,70))
-     &+(RC(JB,588)*Y(JB,72))+(RC(JB,589)*Y(JB,50))  
+     &+(RC(JB,588)*Y(JB,72))+(RC(JB,589)*Y(JB,50))
+     &+(RC(JB,599)    *Y(JB,244))
+     &+(RC(JB,609)    *Y(JB,250))
+     &+(RC(JB,619)    *Y(JB,254))
       Y(JB,  9) = (YP(JB,  9)+DTS*P)/(1.0+DTS*L)
 C
 C          H2               Y(JB, 10)
@@ -4357,7 +4421,18 @@ C          HCHO             Y(JB, 39)
      &+(RC(JB,575)*Y(JB,240)*Y(JB,9)) 
      &+(RC(JB,576)*Y(JB,240))+(RC(JB,577)*Y(JB,240)) 
      &+(RC(JB,585)*Y(JB,106)*Y(JB,9))
-     &+(DJ(JB,64)     *Y(JB,162)) +(DJ(JB,108)*Y(JB,60))         
+     &+(DJ(JB,64)     *Y(JB,162)) +(DJ(JB,108)*Y(JB,60))
+     &+(RC(JB,603)*Y(JB,245)*Y(JB,6))
+     &+(RC(JB,606)*Y(JB,250)*Y(JB,8))
+     &+(RC(JB,608)*Y(JB,250)*Y(JB,5))
+     &+(RC(JB,610)*Y(JB,250))
+     &+(RC(JB,611)*Y(JB,251)*Y(JB,3))
+     &+(RC(JB,612)*Y(JB,252)*Y(JB,3))
+     &+(RC(JB,613)*Y(JB,246)*Y(JB,6))
+     &+(RC(JB,616)*Y(JB,254)*Y(JB,8))
+     &+(RC(JB,618)*Y(JB,254)*Y(JB,5))
+     &+(RC(JB,620)*Y(JB,254))
+     &+(DJ(JB,111)*Y(JB,252))       
       L = DD(JB,39)+DW(JB,39)
      &+(DJ(JB,10)     )                                                    
      &+(RC(JB,82)     *Y(JB,3  ))+(RC(JB,85)     *Y(JB,5  ))
@@ -5320,7 +5395,9 @@ C          RTN25O2          Y(JB,116)
      &+(RC(JB,389)    *Y(JB,3  )*Y(JB,52 ))          
      &+(RC(JB,152)    *Y(JB,50 )*Y(JB,8  ))
      &+(RC(JB,234)    *Y(JB,50 )*Y(JB,5  ))
-     &+(RC(JB,589)*Y(JB,50)*Y(JB,9))           
+     &+(RC(JB,589)*Y(JB,50)*Y(JB,9))      
+     &+(RC(JB,621)*Y(JB,249)*Y(JB,3))
+     &+(RC(JB,622)*Y(JB,253)*Y(JB,3))     
       L = 0.0
      &+(RC(JB,282)    *Y(JB,9  ))+(RC(JB,344)    )                               
      &+(RC(JB,153)    *Y(JB,8  ))+(RC(JB,186)    *Y(JB,8  ))
@@ -5371,7 +5448,9 @@ C          TNCARB10         Y(JB,120)
      &+(RC(JB,347)    *Y(JB,119))       
      &+(DJ(JB,91)     *Y(JB,180))                 
      &+(RC(JB,156)    *Y(JB,119)*Y(JB,8  ))
-     &+(RC(JB,238)    *Y(JB,119)*Y(JB,5  ))          
+     &+(RC(JB,238)    *Y(JB,119)*Y(JB,5  )) 
+     &+(RC(JB,621)*Y(JB,249)*Y(JB,3))
+     &+(RC(JB,622)*Y(JB,253)*Y(JB,3))             
       L = 0.0
      &+(RC(JB,386)    *Y(JB,3  ))+(RC(JB,388)    *Y(JB,5  ))
      &+(DJ(JB,40)     )          
@@ -6295,6 +6374,166 @@ C          HMML            Y(JB,241)
       L = DD(JB,241)+ DW(JB,241)
      &+(RC(JB,579)*Y(JB,3)) +(RC(JB,580)*Y(JB,3))                                                   
       Y(JB,241) = (YP(JB,241)+DTS*P)/(1.0+DTS*L)
+C
+C          BCARY         Y(JB,242)
+      P = EM(JB,242)
+      L = 0
+     &+(RC(JB,590)*Y(JB,6))+(RC(JB,591)*Y(JB,6))+(RC(JB,592)*Y(JB,3))
+      Y(JB,242) = (YP(JB,242)+DTS*P)/(1.0+DTS*L)
+C
+C          BCOO         Y(JB,243)
+      P =0
+     &+(RC(JB,590)*Y(JB,6)*Y(JB,242))
+      L =0
+     &+(RC(JB,593))+(RC(JB,594))+(RC(JB,595))
+      Y(JB,243) = (YP(JB,243)+DTS*P)/(1.0+DTS*L)
+C
+C          BCO2         Y(JB,244)
+      P =0
+     &+(RC(JB,591)*Y(JB,6)*Y(JB,242))+(RC(JB,592)*Y(JB,3)*Y(JB,242))
+      L =0
+     &+(RC(JB,596)*Y(JB,8))+(RC(JB,597)*Y(JB,8))
+     &+(RC(JB,598)*Y(JB,5))+(RC(JB,599)*Y(JB,9))
+     &+(RC(JB,600))
+      Y(JB,244) = (YP(JB,244)+DTS*P)/(1.0+DTS*L)
+C
+C          PROD1         Y(JB,245)
+      P =0
+     &+(RC(JB,593)*Y(JB,243))+(RC(JB,594)*Y(JB,243))
+     &+(RC(JB,596)*Y(JB,244)*Y(JB,8))+(RC(JB,598)*Y(JB,244)*Y(JB,5))
+     &+(RC(JB,600)*Y(JB,244))+(RC(JB,601)*Y(JB,247)*Y(JB,3))
+     &+(RC(JB,602)*Y(JB,248)*Y(JB,3))+(DJ(JB,110)*Y(JB,248))
+      L =0
+     &+(RC(JB,603)*Y(JB,6))+(RC(JB,604)*Y(JB,6))
+     &+(RC(JB,605)*Y(JB,3))
+      Y(JB,245) = (YP(JB,245)+DTS*P)/(1.0+DTS*L)
+C
+C          PROD2         Y(JB,246)
+      P =0
+     &+(RC(JB,595)*Y(JB,243))+(RC(JB,624)*Y(JB,257))
+      L =0
+     &+(RC(JB,613)*Y(JB,6))+(RC(JB,614)*Y(JB,6))
+     &+(RC(JB,615)*Y(JB,3))+(RC(JB,623))
+      Y(JB,246) = (YP(JB,246)+DTS*P)/(1.0+DTS*L)
+C
+C          BCNO3         Y(JB,247)
+      P =0
+     &+(RC(JB,597)*Y(JB,244)*Y(JB,8))+(RC(JB,626)*Y(JB,258))
+      L =0
+     &+(RC(JB,601)*Y(JB,3))+(RC(JB,625))
+      Y(JB,247) = (YP(JB,247)+DTS*P)/(1.0+DTS*L)
+C
+C          BCOOH         Y(JB,248)
+      P =0
+     &+(RC(JB,599)*Y(JB,244)*Y(JB,9))+(RC(JB,628)*Y(JB,259))
+      L =0
+     &+(RC(JB,602)*Y(JB,3))+(DJ(JB,110))+(RC(JB,627))
+      Y(JB,248) = (YP(JB,248)+DTS*P)/(1.0+DTS*L)
+C
+C          PROD3         Y(JB,249)
+      P =0
+     &+(RC(JB,603)*Y(JB,245)*Y(JB,6))+(RC(JB,606)*Y(JB,250)*Y(JB,8))
+     &+(RC(JB,608)*Y(JB,250)*Y(JB,5))+(RC(JB,610)*Y(JB,250))
+     &+(RC(JB,611)*Y(JB,251)*Y(JB,3))+(RC(JB,612)*Y(JB,252)*Y(JB,3))
+     &+(DJ(JB,111)*Y(JB,252))
+      L =0
+     &+(RC(JB,621)*Y(JB,3))
+      Y(JB,249) = (YP(JB,249)+DTS*P)/(1.0+DTS*L)
+C
+C          P1O2         Y(JB,250)
+      P =0
+     &+(RC(JB,604)*Y(JB,245)*Y(JB,6))+(RC(JB,605)*Y(JB,245)*Y(JB,3))
+      L =0
+     &+(RC(JB,606)*Y(JB,8))+(RC(JB,607)*Y(JB,8))
+     &+(RC(JB,608)*Y(JB,5))+(RC(JB,609)*Y(JB,9))
+     &+(RC(JB,610))
+      Y(JB,250) = (YP(JB,250)+DTS*P)/(1.0+DTS*L)
+C
+C          P1NO3         Y(JB,251)
+      P =0
+     &+(RC(JB,607)*Y(JB,250)*Y(JB,8))+(RC(JB,630)*Y(JB,260))
+      L =0
+     &+(RC(JB,611)*Y(JB,3))+(RC(JB,629))
+      Y(JB,251) = (YP(JB,251)+DTS*P)/(1.0+DTS*L)
+C
+C          P1OOH         Y(JB,252)
+      P =0
+     &+(RC(JB,609)*Y(JB,250)*Y(JB,9))+(RC(JB,632)*Y(JB,261))
+      L =0
+     &+(RC(JB,612)*Y(JB,3))+(DJ(JB,111))+(RC(JB,631))
+      Y(JB,252) = (YP(JB,252)+DTS*P)/(1.0+DTS*L)
+C
+C          PROD4         Y(JB,253)
+      P =0
+     &+(RC(JB,613)*Y(JB,246)*Y(JB,6))+(RC(JB,616)*Y(JB,254)*Y(JB,8))
+     &+(RC(JB,618)*Y(JB,254)*Y(JB,5))+(RC(JB,620)*Y(JB,254))
+     &+(RC(JB,634)*Y(JB,262))
+      L =0
+     &+(RC(JB,622)*Y(JB,3))+(RC(JB,633))
+      Y(JB,253) = (YP(JB,253)+DTS*P)/(1.0+DTS*L)
+C
+C          P2O2         Y(JB,254)
+      P =0
+     &+(RC(JB,614)*Y(JB,246)*Y(JB,6))+(RC(JB,615)*Y(JB,246)*Y(JB,3))
+      L =0
+     &+(RC(JB,616)*Y(JB,8))+(RC(JB,617)*Y(JB,8))
+     &+(RC(JB,618)*Y(JB,5))+(RC(JB,619)*Y(JB,9))
+     &+(RC(JB,620))
+      Y(JB,254) = (YP(JB,254)+DTS*P)/(1.0+DTS*L)
+C
+C          P2NO3         Y(JB,255)
+      P =0
+     &+(RC(JB,617)*Y(JB,254)*Y(JB,8))
+      L =DD(JB,255)+ DW(JB,255)
+      Y(JB,255) = (YP(JB,255)+DTS*P)/(1.0+DTS*L)
+C
+C          P2OOH         Y(JB,256)
+      P =0
+     &+(RC(JB,619)*Y(JB,254)*Y(JB,9))
+      L =DD(JB,256)+ DW(JB,256)
+      Y(JB,256) = (YP(JB,256)+DTS*P)/(1.0+DTS*L)
+C
+C          P5001         Y(JB,257)
+      P = 0
+     &+(RC(JB,623)    *Y(JB,246))                                             
+      L = DD(JB,257)+ DW(JB,257)
+     &+(RC(JB,624))                                                    
+      Y(JB,257) = (YP(JB,257)+DTS*P)/(1.0+DTS*L)
+C
+C          P5002         Y(JB,258)
+      P = 0
+     &+(RC(JB,625)    *Y(JB,247))                                             
+      L = DD(JB,258)+ DW(JB,258)
+     &+(RC(JB,626))                                                    
+      Y(JB,258) = (YP(JB,258)+DTS*P)/(1.0+DTS*L)
+C
+C          P5003         Y(JB,259)
+      P = 0
+     &+(RC(JB,627)    *Y(JB,248))                                             
+      L = DD(JB,259)+ DW(JB,259)
+     &+(RC(JB,628))                                                    
+      Y(JB,259) = (YP(JB,259)+DTS*P)/(1.0+DTS*L)
+C
+C          P5004         Y(JB,260)
+      P = 0
+     &+(RC(JB,629)    *Y(JB,251))                                             
+      L = DD(JB,260)+ DW(JB,260)
+     &+(RC(JB,630))                                                    
+      Y(JB,260) = (YP(JB,260)+DTS*P)/(1.0+DTS*L)
+C
+C          P5005         Y(JB,261)
+      P = 0
+     &+(RC(JB,631)    *Y(JB,252))                                             
+      L = DD(JB,261)+ DW(JB,261)
+     &+(RC(JB,632))                                                    
+      Y(JB,261) = (YP(JB,261)+DTS*P)/(1.0+DTS*L)
+C
+C          P5006         Y(JB,262)
+      P = 0
+     &+(RC(JB,633)    *Y(JB,253))                                             
+      L = DD(JB,262)+ DW(JB,262)
+     &+(RC(JB,634))                                                    
+      Y(JB,262) = (YP(JB,262)+DTS*P)/(1.0+DTS*L)
 C      iteration loop stop
   901   CONTINUE
  1000 CONTINUE
@@ -7491,6 +7730,96 @@ C        C2H5CO3+HO2=C2H5O2+OH
       FLUX(JB,590)=FLUX(JB,590)+RC(JB,588)*Y(JB,72)*Y(JB,9)*DTS/M(JB)
 C        RTN26O2+HO2=RTN25O2+OH
       FLUX(JB,591)=FLUX(JB,591)+RC(JB,589)*Y(JB,50)*Y(JB,9)*DTS/M(JB)
+C        BCARY + O3 = BCOO
+      FLUX(JB,592)=FLUX(JB,592)+RC(JB,590)*Y(JB,242)*Y(JB,6)*DTS/M(JB)  
+C        BCARY + O3 = BCO2 +OH
+      FLUX(JB,593)=FLUX(JB,593)+RC(JB,591)*Y(JB,242)*Y(JB,6)*DTS/M(JB)      
+C        BCARY + OH = BCO2
+      FLUX(JB,594)=FLUX(JB,594)+RC(JB,592)*Y(JB,242)*Y(JB,3)*DTS/M(JB)      
+C        BCOO = PROD1
+      FLUX(JB,595)=FLUX(JB,595)+RC(JB,593)*Y(JB,243)*DTS/M(JB)
+C        BCOO = PROD1 + H2O2
+      FLUX(JB,596)=FLUX(JB,596)+RC(JB,594)*Y(JB,243)*DTS/M(JB)
+C        BCOO = PROD2
+      FLUX(JB,597)=FLUX(JB,597)+RC(JB,595)*Y(JB,243)*DTS/M(JB)     
+C        BCO2 + NO = PROD1 + HO2 + NO2
+      FLUX(JB,598)=FLUX(JB,598)+RC(JB,596)*Y(JB,244)*Y(JB,8)*DTS/M(JB)    
+C        BCO2 + NO = BCNO3
+      FLUX(JB,599)=FLUX(JB,599)+RC(JB,597)*Y(JB,244)*Y(JB,8)*DTS/M(JB)      
+C        BCO2 + NO3 = PROD1 + HO2 + NO2
+      FLUX(JB,600)=FLUX(JB,600)+RC(JB,598)*Y(JB,244)*Y(JB,5)*DTS/M(JB)      
+C        BCO2 + HO2 = BCOOH
+      FLUX(JB,601)=FLUX(JB,601)+RC(JB,599)*Y(JB,244)*Y(JB,9)*DTS/M(JB)     
+C        BCO2 = PROD1 + HO2
+      FLUX(JB,602)=FLUX(JB,602)+RC(JB,600)*Y(JB,244)*DTS/M(JB)     
+C        BCNO3 + OH = PROD1 + NO2
+      FLUX(JB,603)=FLUX(JB,603)+RC(JB,601)*Y(JB,247)*Y(JB,3)*DTS/M(JB)   
+C        BCOOH + OH = PROD1 + OH
+      FLUX(JB,604)=FLUX(JB,604)+RC(JB,602)*Y(JB,248)*Y(JB,3)*DTS/M(JB)     
+C        PROD1 + O3 = PROD3 + HCHO
+      FLUX(JB,605)=FLUX(JB,605)+RC(JB,603)*Y(JB,245)*Y(JB,6)*DTS/M(JB)     
+C        PROD1 + O3 = P1O2 + OH
+      FLUX(JB,606)=FLUX(JB,606)+RC(JB,604)*Y(JB,245)*Y(JB,6)*DTS/M(JB)      
+C        PROD1 + OH = P1O2
+      FLUX(JB,607)=FLUX(JB,607)+RC(JB,605)*Y(JB,245)*Y(JB,3)*DTS/M(JB)     
+C        P1O2 + NO = PROD3 + HCHO + HO2 + NO2
+      FLUX(JB,608)=FLUX(JB,608)+RC(JB,606)*Y(JB,250)*Y(JB,8)*DTS/M(JB)     
+C        P1O2 + NO = P1NO3
+      FLUX(JB,609)=FLUX(JB,609)+RC(JB,607)*Y(JB,250)*Y(JB,8)*DTS/M(JB)     
+C        P1O2 + NO3 = PROD3 + HCHO + HO2 + NO2
+      FLUX(JB,610)=FLUX(JB,610)+RC(JB,608)*Y(JB,250)*Y(JB,5)*DTS/M(JB)      
+C        P1O2 + HO2 = P1OOH
+      FLUX(JB,611)=FLUX(JB,611)+RC(JB,609)*Y(JB,250)*Y(JB,9)*DTS/M(JB)     
+C        P1O2 = PROD3 + HCHO + HO2
+      FLUX(JB,612)=FLUX(JB,612)+RC(JB,610)*Y(JB,250)*DTS/M(JB)      
+C        P1NO3 +OH = PROD3 + HCHO + NO2
+      FLUX(JB,613)=FLUX(JB,613)+RC(JB,611)*Y(JB,251)*Y(JB,3)*DTS/M(JB)      
+C        P1OOH + OH = PROD3 + HCHO + OH
+      FLUX(JB,614)=FLUX(JB,614)+RC(JB,612)*Y(JB,252)*Y(JB,3)*DTS/M(JB)      
+C        PROD2 + O3 = PROD4 + HCHO
+      FLUX(JB,615)=FLUX(JB,615)+RC(JB,613)*Y(JB,246)*Y(JB,6)*DTS/M(JB)     
+C        PROD2 + O3 = P2O2 + OH
+      FLUX(JB,616)=FLUX(JB,616)+RC(JB,614)*Y(JB,246)*Y(JB,6)*DTS/M(JB)     
+C        PROD2 + OH = P2O2
+      FLUX(JB,617)=FLUX(JB,617)+RC(JB,615)*Y(JB,246)*Y(JB,3)*DTS/M(JB)      
+C        P2O2 + NO = PROD4 + HCHO + HO2 + NO2
+      FLUX(JB,618)=FLUX(JB,618)+RC(JB,616)*Y(JB,254)*Y(JB,8)*DTS/M(JB)      
+C        P2O2 + NO = P2NO3
+      FLUX(JB,619)=FLUX(JB,619)+RC(JB,617)*Y(JB,254)*Y(JB,8)*DTS/M(JB)      
+C        P2O2 + NO3 = PROD4 + HCHO + HO2 + NO2
+      FLUX(JB,620)=FLUX(JB,620)+RC(JB,618)*Y(JB,254)*Y(JB,5)*DTS/M(JB)           
+C        P2O2 + HO2 = P2OOH
+      FLUX(JB,621)=FLUX(JB,621)+RC(JB,619)*Y(JB,254)*Y(JB,9)*DTS/M(JB)      
+C        P2O2 = PROD4 + HCHO + HO2
+      FLUX(JB,622)=FLUX(JB,622)+RC(JB,620)*Y(JB,254)*DTS/M(JB)    
+C        PROD3 + OH = RTN25O2+TNCARB10
+      FLUX(JB,623)=FLUX(JB,623)+RC(JB,621)*Y(JB,249)*Y(JB,3)*DTS/M(JB)      
+C        PROD4 + OH = RTN25O2+TNCARB10
+      FLUX(JB,624)=FLUX(JB,624)+RC(JB,622)*Y(JB,253)*Y(JB,3)*DTS/M(JB)     
+C        PROD2 = P5001
+      FLUX(JB,625)=FLUX(JB,625)+RC(JB,623)*Y(JB,246)*DTS/M(JB)     
+C        P5001 = PROD2
+      FLUX(JB,626)=FLUX(JB,626)+RC(JB,624)*Y(JB,257)*DTS/M(JB)      
+C        BCNO3 = P5002
+      FLUX(JB,627)=FLUX(JB,627)+RC(JB,625)*Y(JB,247)*DTS/M(JB)     
+C        P5002 = BCNO3
+      FLUX(JB,628)=FLUX(JB,628)+RC(JB,626)*Y(JB,258)*DTS/M(JB)      
+C        BCOOH = P5003
+      FLUX(JB,629)=FLUX(JB,629)+RC(JB,627)*Y(JB,248)*DTS/M(JB)     
+C        P5003 = BCOOH
+      FLUX(JB,630)=FLUX(JB,630)+RC(JB,628)*Y(JB,259)*DTS/M(JB)      
+C        P1NO3 = P5004
+      FLUX(JB,631)=FLUX(JB,631)+RC(JB,629)*Y(JB,251)*DTS/M(JB)      
+C        P5004 = P1NO3
+      FLUX(JB,632)=FLUX(JB,632)+RC(JB,630)*Y(JB,260)*DTS/M(JB)      
+C        P1OOH = P5005
+      FLUX(JB,633)=FLUX(JB,633)+RC(JB,631)*Y(JB,252)*DTS/M(JB)      
+C        P5005 = P1OOH
+      FLUX(JB,634)=FLUX(JB,634)+RC(JB,632)*Y(JB,261)*DTS/M(JB)     
+C        PROD4 = P5006
+      FLUX(JB,635)=FLUX(JB,635)+RC(JB,633)*Y(JB,253)*DTS/M(JB)
+C        P5006 = PROD4
+      FLUX(JB,636)=FLUX(JB,636)+RC(JB,634)*Y(JB,262)*DTS/M(JB)
  1021 CONTINUE
 C
 C      --------------------
@@ -7716,6 +8045,10 @@ C       CARB3=HCHO+CO
         FLUX(JB,808)=FLUX(JB,808)+DJ(JB,108)*Y(JB,60)*DTS/M(JB)
 C       CH3CHO=CH4+CO
         FLUX(JB,809)=FLUX(JB,809)+DJ(JB,109)*Y(JB,42)*DTS/M(JB)
+C       BCOOH->PROD1+HO2+OH
+        FLUX(JB,810)=FLUX(JB,810)+DJ(JB,110)*Y(JB,248)*DTS/M(JB)
+C       P1OOH->PROD3+HCHO+HO2+OH
+        FLUX(JB,811)=FLUX(JB,811)+DJ(JB,111)*Y(JB,252)*DTS/M(JB)
 C
 C      -------------------------
 C      EMISSIONS AND DEPOSITION:
@@ -7813,6 +8146,8 @@ C
       REAL KOUT2669,KOUT3613,KOUT3612,KOUT2637,KOUT2632
       REAL BGOAM,KALKOXY,KALKPXY,K150,K15I,KR15,FC15,F15
       REAL K170, K17I, KR17,FC17,F17,R,MOM(NBLOCK)
+      REAL KOUT5001,KOUT5002,KOUT5003,KOUT5004,KOUT5005
+      REAL KOUT5006
        R = 8.314
 
       DO JB=1,NBLOCK
@@ -7854,6 +8189,12 @@ C
       KOUT3612 = 2.065*EXP(-6386/(R*TC(JB)))
       KOUT3613 = 2.065*EXP(-9027/(R*TC(JB)))
       KOUT3442 = 2.065*EXP(-10786/(R*TC(JB)))
+      KOUT5001 = 2.065*EXP(-5488/(R*TC(JB)))
+      KOUT5002 = 2.065*EXP(-3519/(R*TC(JB)))
+      KOUT5003 = 2.065*EXP(-8190/(R*TC(JB)))
+      KOUT5004 = 2.065*EXP(-10411/(R*TC(JB)))
+      KOUT5005 = 2.065*EXP(-15220/(R*TC(JB)))
+      KOUT5006 = 2.065*EXP(-10752/(R*TC(JB)))
 C
 C    COMPLEX RATE COEFFICIENTS                    
 C                                                                     
@@ -9773,6 +10114,141 @@ C     Reaction (588) C2H5CO3+HO2 = C2H5O2+OH
 C
 C     Reaction (589) RTN26O2+HO2 = RTN25O2+OH                                           
          RC(JB,589) = KAPHO2*0.44
+C
+C     Reaction (590): BCARY + O3 = BCOO
+        RC(JB,590) = 1.2D-14*0.9
+C
+C     Reaction (591): BCARY + O3 = BCO2 +OH
+        RC(JB,591) = 1.2D-14*0.1
+C
+C     Reaction (592): BCARY + OH = BCO2
+        RC(JB,592) = 1.97D-10
+C
+C     Reaction (593): BCOO = PROD1
+        RC(JB,593) = 100
+C
+C     Reaction (594): BCOO = PROD1 + H2O2
+        RC(JB,594) = 2.00D-16*H2O(JB)*0.5
+C
+C     Reaction (595): BCOO = PROD2
+        RC(JB,595) = 2.00D-16*H2O(JB)*0.5
+C
+C     Reaction (596): BCO2 + NO = PROD1 + HO2 + NO2
+        RC(JB,596) = KRO2NO*0.753
+C
+C     Reaction (597): BCO2 + NO = BCNO3
+        RC(JB,597) = KRO2NO*0.247
+C
+C     Reaction (598): BCO2 + NO3 = PROD1 + HO2 + NO2
+        RC(JB,598) = KRO2NO3
+C
+C     Reaction (599): BCO2 + HO2 = BCOOH
+        RC(JB,599) = KRO2HO2*0.975
+C
+C     Reaction (600): BCO2 = PROD1 + HO2
+        RC(JB,600) = 2.20D-13*RO2(JB)
+C
+C     Reaction (601): BCNO3 + OH = PROD1 + NO2
+        RC(JB,601) = 7.30D-11
+C
+C     Reaction (602): BCOOH + OH = PROD1 + OH
+        RC(JB,602) = 9.10D-11
+C
+C     Reaction (603): PROD1 + O3 = PROD3 + HCHO
+        RC(JB,603) = 1.10D-16*0.836
+C
+C     Reaction (604): PROD1 + O3 = P1O2 + OH
+        RC(JB,604) = 1.10D-16*0.164
+C
+C     Reaction (605): PROD1 + OH = P1O2
+        RC(JB,605) = 7.90D-11
+C
+C     Reaction (606): P1O2 + NO = PROD3 + HCHO + HO2 + NO2
+        RC(JB,606) = KRO2NO*0.753
+C
+C     Reaction (607): P1O2 + NO = P1NO3
+        RC(JB,607) = KRO2NO*0.247
+C
+C     Reaction (608): P1O2 + NO3 = PROD3 + HCHO + HO2 + NO2
+        RC(JB,608) = KRO2NO3
+C
+C     Reaction (609): P1O2 + HO2 = P1OOH
+        RC(JB,609) = KRO2HO2*0.975
+C
+C     Reaction (610): P1O2 = PROD3 + HCHO + HO2
+        RC(JB,610) = 9.20D-14*RO2(JB)
+C
+C     Reaction (611): P1NO3 +OH = PROD3 + HCHO + NO2
+        RC(JB,611) = 2.30D-11
+C
+C     Reaction (612): P1OOH + OH = PROD3 + HCHO + OH
+        RC(JB,612) = 3.60D-11
+C
+C     Reaction (613): PROD2 + O3 = PROD4 + HCHO
+        RC(JB,613) = 1.10D-16*0.836
+C
+C     Reaction (614): PROD2 + O3 = P2O2 + OH
+        RC(JB,614) = 1.10D-16*0.164
+C
+C     Reaction (615): PROD2 + OH = P2O2
+        RC(JB,615) = 7.00D-11
+C
+C     Reaction (616): P2O2 + NO = PROD4 + HCHO + HO2 + NO2
+        RC(JB,616) = KRO2NO*0.753
+C
+C     Reaction (617): P2O2 + NO = P2NO3
+        RC(JB,617) = KRO2NO*0.247
+C
+C     Reaction (618): P2O2 + NO3 = PROD4 + HCHO + HO2 + NO2
+        RC(JB,618) = KRO2NO3
+C
+C     Reaction (619): P2O2 + HO2 = P2OOH
+        RC(JB,619) = KRO2HO2*0.975
+C
+C     Reaction (620): P2O2 = PROD4 + HCHO + HO2
+        RC(JB,620) = 9.20D-14*RO2(JB)
+C
+C     Reaction (621): PROD3 + OH = RTN25O2+TNCARB10
+        RC(JB,621) = 3.70D-11
+C
+C     Reaction (622): PROD4 + OH = RTN25O2+TNCARB10
+        RC(JB,622) = 1.20D-11
+C
+C     Reaction (623) PROD2 = P5001                                                   
+         RC(JB,623) = KIN 	
+C
+C     Reaction (624) P5001 = PROD2                                                   
+         RC(JB,624) = KOUT5001
+C
+C     Reaction (625) BCNO3 = P5002                                                   
+         RC(JB,625) = KIN 	
+C
+C     Reaction (626) P5002 = BCNO3                                                   
+         RC(JB,626) = KOUT5002
+C
+C     Reaction (627) BCOOH = P5003                                                   
+         RC(JB,627) = KIN 	
+C
+C     Reaction (628) P5003 = BCOOH                                                   
+         RC(JB,628) = KOUT5003
+C
+C     Reaction (629) P1NO3 = P5004                                                   
+         RC(JB,629) = KIN 	
+C
+C     Reaction (630) P5004 = P1NO3                                                   
+         RC(JB,630) = KOUT5004
+C
+C     Reaction (631) P1OOH = P5005                                                   
+         RC(JB,631) = KIN 	
+C
+C     Reaction (632) P5005 = P1OOH                                                   
+         RC(JB,632) = KOUT5005
+C
+C     Reaction (633) PROD4 = P5006                                                   
+         RC(JB,633) = KIN 	
+C
+C     Reaction (634) P5006 = PROD4                                                   
+         RC(JB,634) = KOUT5006
 C       -----------------------
 C       Aqueous phase reactions
 C       -----------------------
@@ -10703,6 +11179,14 @@ c      DATA DVLAND(53),DVSEA(53)   /5.0,  5.0/ ! MVKOOH
       DATA DVLAND(216),DVSEA(216) /2.0,  1.0/ ! P3442
       DATA DVLAND(218),DVSEA(218) /2.0,  1.0/ ! EMPOA
       DATA DVLAND(219),DVSEA(219) /2.0,  1.0/ ! P2007
+      DATA DVLAND(255),DVSEA(255) /2.0,  1.0/ ! P2NO3
+      DATA DVLAND(256),DVSEA(256) /2.0,  1.0/ ! P2OOH      
+      DATA DVLAND(257),DVSEA(257) /2.0,  1.0/ ! P5001
+      DATA DVLAND(258),DVSEA(258) /2.0,  1.0/ ! P5002
+      DATA DVLAND(259),DVSEA(259) /2.0,  1.0/ ! P5003
+      DATA DVLAND(260),DVSEA(260) /2.0,  1.0/ ! P5004
+      DATA DVLAND(261),DVSEA(261) /2.0,  1.0/ ! P5005
+      DATA DVLAND(262),DVSEA(262) /2.0,  1.0/ ! P5006
 C
       DATA DVLAND(226),DVSEA(226) /2.0,  1.0/ ! MSA   
       DATA DVLAND(227),DVSEA(227) /0.0,  0.0/ ! CH3BR
@@ -10753,6 +11237,7 @@ C                                  Anth  ,Biomass,Veg   ,Soil  ,Oceans
       DATA (CLASS(IC,227),IC=1,5)  /0.065 ,0.02   ,0.0   ,0.0   ,0.0 / ! CH3BR
       DATA (CLASS(IC,228),IC=1,5)  /37.1  ,5.9    ,0.0   ,2.4   ,8.2 / ! NH3
       DATA (CLASS(IC,218),IC=1,5)  /12.3  ,52.48  ,0.0   ,0.0  ,0.0 / ! EMPOA
+      DATA (CLASS(IC,242),IC=1,5)  /0.0  ,0.0    ,29.0   ,0.0   ,0.0 / ! BCARY
 C      DATA (CLASS(IC,4),IC=1,5)   /21.0  ,8.0    ,0.0   ,5.6   ,0.0 / ! NOX
 C      DATA (CLASS(IC,8),IC=1,5)   /425.0 ,500.0  ,75.0  ,0.0   ,50.0/ ! CO
 C      DATA (CLASS(IC,9),IC=1,5)   /155.0 ,40.0   ,0.0   ,0.0   ,10.0/ ! CH4
@@ -10905,7 +11390,14 @@ C
       DATA DSC(219),CSC(219) / 5.0,  1.0/ ! P2007
       DATA DSC(226),CSC(226) / 5.0,  1.5/ ! MSA
       DATA DSC(228),CSC(228) / 2.4,  4.7/ ! NH3?
-
+      DATA DSC(255),CSC(255) / 5.0,  1.0/ ! P2NO3
+      DATA DSC(256),CSC(256) / 5.0,  1.0/ ! P2OOH
+      DATA DSC(257),CSC(257) / 5.0,  1.0/ ! P5001
+      DATA DSC(258),CSC(258) / 5.0,  1.0/ ! P5002
+      DATA DSC(259),CSC(259) / 5.0,  1.0/ ! P5003
+      DATA DSC(260),CSC(260) / 5.0,  1.0/ ! P5004
+      DATA DSC(261),CSC(261) / 5.0,  1.0/ ! P5005
+      DATA DSC(262),CSC(262) / 5.0,  1.0/ ! P5006
 c      DATA DSC(35),CSC(35) / 2.0,  4.0/  ! C4H9OOH
 c      DATA DSC(52),CSC(52) / 2.0,  4.0/  ! ISOPOOH
 c      DATA DSC(53),CSC(53) / 2.0,  4.0/  ! MVKOOH
@@ -11367,6 +11859,12 @@ C NH3
      &      CLASS(3,228)*VEG(I1,J1)+
      &      CLASS(4,228)*SOIL(I1,J1)+
      &      CLASS(5,228)*OCEAN(I1,J1))*1E12*NA/(14.0*31536000.0)
+C BCARY
+          EMISS(242,I,J)=EMISS(242,I,J)+
+     &      (CLASS(2,242)*BURN(I1,J1)+
+     &      CLASS(3,242)*VEG(I1,J1)+
+     &      CLASS(4,242)*SOIL(I1,J1)+
+     &      CLASS(5,242)*OCEAN(I1,J1))*1E12*NA/(204.0*31536000.0)     
    20   CONTINUE
    10 CONTINUE
   100 FORMAT(6E12.4)
@@ -11714,7 +12212,12 @@ C----------------------------------------------------------------------
      & NH3         , AMMSUL      , HPUCARB12   , DHPR12O2     , 
      & DHPR12OOH   , DHPCARB9    , HUCARB9     , RU10NO3     , 
      & RU12NO3     , IEPOX       , DHCARB9     , RU10AO2     ,
-     & MACO3      , HMML 
+     & MACO3       , HMML        , BCARY       , BCOO        , 
+     & BCO2        , PROD1       , PROD2       , BCNO3       , 
+     & BCOOH       , PROD3       , P1O2        , P1NO3       , 
+     & P1OOH       , PROD4       , P2O2        , P2NO3       , 
+     & P2OOH       , P5001       , P5002       , P5003       , 
+     & P5004       , P5005       , P5006 
       COMMON
      & O1D         ,O           ,OH          , NO2         ,
      & NO3         , O3          ,N2O5        ,NO          ,
@@ -11775,7 +12278,12 @@ C----------------------------------------------------------------------
      & NH3         , AMMSUL      , HPUCARB12   , DHPR12O2     , 
      & DHPR12OOH   , DHPCARB9    , HUCARB9     , RU10NO3     , 
      & RU12NO3     , IEPOX       , DHCARB9     , RU10AO2     ,
-     & MACO3       , HMML     
+     & MACO3       , HMML        , BCARY       , BCOO        , 
+     & BCO2        , PROD1       , PROD2       , BCNO3       , 
+     & BCOOH       , PROD3       , P1O2        , P1NO3       , 
+     & P1OOH       , PROD4       , P2O2        , P2NO3       , 
+     & P2OOH       , P5001       , P5002       , P5003       , 
+     & P5004       , P5005       , P5006 
 C
 
       M=NA*ETA2P(POS(3),P0)/(RGC*TL*1.0D04)
@@ -12138,7 +12646,7 @@ C
       REAL RGC,NA
       PARAMETER(RGC=8.314,NA=6.022E23)
 C
-      REAL P(109,NLEV),BR01(NLEV)
+      REAL P(111,NLEV),BR01(NLEV)
       REAL ZENITH,YEAR,LAT,LONG,ZEN
       DOUBLE PRECISION TIME
       REAL NN(0:NLEV),TT(0:NLEV),ZZ(0:NLEV),TU(NLEV),
@@ -13109,6 +13617,8 @@ C AIS -ALREADY IN STOCHEM
           P(107,J)=J2GLY(J)		!JCARB3(J) - J<31> - AIS
           P(108,J)=J3GLY(J)		!JCARB3(J) - J<32> - AIS
           P(109,J)=J2ACET(J)		!JCH3CHO - molecular channel, added 10/03/2025
+          P(110,J)=JCH3OOH(J)		!BCOOH
+          P(111,J)=JCH3OOH(J)		!P1OOH
 C
 C          P(8,J)=J1ACET(J)
 C          P(9,J)=JAONE(J)

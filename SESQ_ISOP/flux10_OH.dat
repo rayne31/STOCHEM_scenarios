@@ -35,6 +35,8 @@ DHCARB9->CARB7+CO+HO2+HO2               806  1
 CARB3->CO+CO+H2                         807  1
 CARB3->HCHO+CO                          808  1
 CH3CHO->CH4+CO                          809  1
+BCOOH->PROD1+HO2+OH                     810  1
+P1OOH->PROD3+HCHO+HO2+OH                811  1
 RTX24OOH->TXCARB22+HO2+OH               794  1
 RTN10OOH->RN8O2+CO+OH                   792  1
 RTN23OOH->CH3COCH3+RTN14O2+OH           790  1
@@ -698,6 +700,51 @@ O3+UCARB12->CARB3+HOCH2CHO+CH3CO3+OH    588  0
 OH+CARB3->CO+OH                         589  0
 C2H5CO3+HO2->C2H5O2+OH                  590  0
 RTN26O2+HO2->RTN25O2+OH                 591  0
+BCARY+O3->BCOO                          592  0
+BCARY+O3->BCO2+OH                       593  0
+BCARY+OH->BCO2                          594  0
+BCOO->PROD1                             595  0
+BCOO->PROD1+H2O2                        596  0
+BCOO->PROD2                             597  0
+BCO2+NO->PROD1+HO2+NO2                  598  0
+BCO2+NO->BCNO3                          599  0
+BCO2+NO3->PROD1+HO2+NO2                 600  0
+BCO2+HO2->BCOOH                         601  0
+BCO2->PROD1+HO2                         602  0
+BCNO3+OH->PROD1+NO2                     603  0
+BCOOH+OH->PROD1+OH                      604  0
+PROD1+O3->PROD3+HCHO                    605  0
+PROD1+O3->P1O2+OH                       606  0
+PROD1+OH->P1O2                          607  0
+P1O2+NO->PROD3+HCHO+HO2+NO2             608  0
+P1O2+NO->P1NO3                          609  0
+P1O2+NO3->PROD3+HCHO+HO2+NO2            610  0
+P1O2+HO2->P1OOH                         611  0
+P1O2->PROD3+HCHO+HO2                    612  0
+P1NO3+OH->PROD3+HCHO+NO2                613  0
+P1OOH+OH->PROD3+HCHO+OH                 614  0
+PROD2+O3->PROD4+HCHO                    615 0
+PROD2+O3->P2O2+OH                       616  0
+PROD2+OH->P2O2                          617  0
+P2O2+NO->PROD4+HCHO+HO2+NO2             618  0
+P2O2+NO->P2NO3                          619  0
+P2O2+NO3->PROD4+HCHO+HO2+NO2            620  0
+P2O2+HO2->P2OOH                         621  0
+P2O2->PROD4+HCHO+HO2                    622  0
+PROD3+OH->RTN25O2+TNCARB10              623  0
+PROD4+OH->RTN25O2+TNCARB10              624  0
+PROD2->P5001                            625  0
+P5001->PROD2                            626  0
+BCNO3->P5002                            627  0
+P5002->BCNO3                            628  0
+BCOOH->P5003                            629  0
+P5003->BCOOH                            630  0
+P1NO3->P5004                            631  0
+P5004->P1NO3                            632  0
+P1OOH->P5005                            633  0
+P5005->P1OOH                            634  0
+PROD4->P5006                            635  0
+P5006->PROD4                            636  0
 O3 emission                             906  0
 NO emission                             908  0
 H2 emission                             910  0
@@ -731,6 +778,7 @@ EMPOA emission                         1118  0
 DMS emission                           1120  0
 CH3BR emission                         1127  0
 NH3 emission                           1128  0
+BCARY emission                         1142  0
 NO2 dry dep                            1204  0
 O3 dry dep                             1206  0
 H2 dry dep                             1210  0
@@ -773,6 +821,14 @@ P2007 dry dep                          1419  0
 MSA dry dep                            1426  0
 CH3BR dry dep                          1427  0
 NH3 dry dep                            1428  0
+P2NO3 dry dep                          1455  0
+P2OOH dry dep                          1456  0
+P5001 dry dep                          1457  0
+P5002 dry dep                          1458  0
+P5003 dry dep                          1459  0
+P5004 dry dep                          1460  0
+P5005 dry dep                          1461  0
+P5006 dry dep                          1462  0
 N205 wet dep                           1507  0
 H2O2 wet dep                           1512  0
 HONO wet dep                           1513  0
@@ -803,3 +859,11 @@ EMPOA wet dep                          1718  0
 P2007 wet dep                          1719  0
 MSA wet dep                            1726  0
 NH3 wet dep                            1728  0
+P2NO3 wet dep                          1755  0
+P2OOH wet dep                          1756  0
+P5001 wet dep                          1757  0
+P5002 wet dep                          1758  0
+P5003 wet dep                          1759  0
+P5004 wet dep                          1760  0
+P5005 wet dep                          1761  0
+P5006 wet dep                          1762  0
